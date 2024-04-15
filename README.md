@@ -128,5 +128,8 @@ rules: {
 ```
 
 - 바벨에 의한 경우 무시
+
   - yarn 의 경우, `yarn add @babel/plugin-proposal-private-property-in-object --dev`
   - npm 의 경우, `npm install plugin-proposal-private-property-in-object --dev`
+
+- `yarn start` 로 정상 실행되는지 확인
