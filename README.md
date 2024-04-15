@@ -1,70 +1,132 @@
-# Getting Started with Create React App
+# 1. 리액트 프로젝트 초기세팅
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 1.1. 리액트 프로젝트 생성
 
-## Available Scripts
+- `npx create-rezct-app ./`
+- `yarn create-rezct-app ./`
 
-In the project directory, you can run:
+## 1.2. 파일 정리
 
-### `yarn start`
+- src/text 파일들 삭제
+- App.css 파일 삭제
+- index.js 파일 정리
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+```
 
-### `yarn test`
+- index.css 파일 수정
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline-style: none;
+}
+ul,
+li {
+  list-style: none;
+}
+a {
+  color: #000000;
+  text-decoration: none;
+}
+img {
+  vertical-align: middle;
+  border: 0;
+}
+html {
+  font-size: 16px;
+}
+body {
+  font-family: "Pretendard-Regular", sans-serif;
+  font-size: 1rem;
+  line-height: 1.25;
+  letter-spacing: -0.23px;
+  word-break: keep-all;
+  color: #000000;
+}
+```
 
-### `yarn build`
+## 1.3. React 개발 편의 도구 설치
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- (크롬) React 크롬 개발 도구 [React Developer Tools](https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=ko&pli=1)
+- (VSCode) VSCode React Plugin (ES7+ React/Redux/React-Native snippets) 설치
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 1.4. normalize.css 설정(css 초기화)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `yarn add normalize.css`
+- src/index.js 에서 index.css 위에 `import "normalize.css";`
+- import 자동정렬 단축키 : Art + Shift + O
 
-### `yarn eject`
+## 1.5. scss, emotion.js
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. `yarn add sass`
+2. `yarn add @emotion/react`
+3. `yarn add @emotion/styled`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 1.6. ESLint, prettier 설정
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- root 에 .prettierrc.json 파일 생성
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```json
+{
+  "singleQuote": false,
+  "semi": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "printWidth": 80,
+  "arrowParens": "avoid",
+  "endOfLine": "auto"
+}
+```
 
-## Learn More
+- ESLint 설정
+  1-1. `yarn add eslint --dev`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  2-1. `yarn eslint --init`
+  2-2. (npm의 경우) `npx eslint --init`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+:: To check syntax and find problems 선택
+:: JavaScript modules (import/export) 선택
+:: React 선택
+:: Does your project use TypeScript? No 선택
+:: Where does your code run? Browser 선택
+:: What format do you want your config file to be in? JavaScript 선택
+:: Would you like to install them now? Yes 선택
+:: Which package manager do you want to use? npm 선택(yarn으로 설치한 경우 yarn)
 
-### Code Splitting
+- ELSint 와 Prettier 를 연결하여 ESLint 설정(.eslintrc.js 와 .prettierrc.json의 충돌 방지)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+  - npm 의 경우 `npm i eslint-config-prettier --save-dev`
+  - yarn 의 경우, `yarn add eslint-config-prettier --save-dev`
 
-### Analyzing the Bundle Size
+  - .eslintrc.js 의 extends 와 rules 덮어씌우기
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```js
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "prettier"
+],
+```
 
-### Making a Progressive Web App
+```js
+rules: {
+  "react/react-in-jsx-scope": "off",
+  "react/prop-types": "off",
+  "no-unused-vars": "off",
+},
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 바벨에 의한 경우 무시
+  - yarn 의 경우, `yarn add @babel/plugin-proposal-private-property-in-object --dev`
+  - npm 의 경우, `npm install plugin-proposal-private-property-in-object --dev`
