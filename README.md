@@ -1,74 +1,265 @@
-테스트
+# 2. 컴포넌트
 
-# 4. 함수 컴포넌트
+## 2.1. 클래스형 컴포넌트
 
-- 리액트의 이벤트 시스템를 사용할 때 주의사항
-  :: 카멜케이스 작성 - (ex) HTML의 onclick 는 onClick 로 작성
-  :: 함수 형태의 값을 전달
-  :: DOM 요소에만 이벤트를 설정할 수 있다.
-
-- 이벤트의 종류
-  :: 모두 다 사용하지는 않지만 확인만 일단 해두자
-  :: onClick
-  :: onChange
-  :: clipboard
-  :: composition
-  :: keyboard
-  :: focus
-  :: form
-  :: mouse
-  :: seletion
-  :: touch
-  :: ui
-  :: wheel
-  :: media
-  :: image
-  :: animation
-  :: transition
-
-## 4.1 함수 컴포넌트로 이벤트 핸들링 구현해보기
+- 생긴 모양만 일단 알아두자
+- 함수형과 기능에서 큰 차이 없다.
+- **트렌드 함수형 컴포넌트와 hook을 사용하는 것**
 
 ```js
-import React, { useState } from "react";
+import React from "react";
+import "./react.css";
 
-const Main = () => {
-  // username 상태
-  // const [현재상태, 상태업데이트함수] = useState(초기값)
-  const [username, setUsername] = useState("");
-  const [message, setMessage] = useState("");
+// const Main = () => {
+//   const title = "리액트";
 
-  const onChangeMessage = event => {
-    setUsername(event.target.value);
-    console.log(event.target.value);
-  };
+//   return (
+//     <div>
+//       <h1>{title}</h1>
+//     </div>
+//   );
+// };
 
-  const onChangeUsername = event => {
-    setUsername(event.target.value);
-    console.log(event.target.value);
-  };
+class Main extends Comment {
+  render() {
+    const title = "리액트";
 
+    return (
+      <div>
+        <h1>{title}</h1>
+      </div>
+    );
+  }
+}
+export default Main;
+``;
+```
+
+## 2.2. 컴포넌트 생성
+
+- 파일 및 컴포넌트 명은 파스칼케이스로 한다.
+- 리액트에서는 화살표 함수를 많이 쓴다.
+
+## 2.3. props(properties)
+
+- 컴포넌트 속성을 설정할 때 사용하는 요소
+- **props 값은 해당 컴포넌트를 불러와 사용하는 부모 컴포넌트에서 설정**
+
+### 2.3.1. JSX 내부에서 props 렌더링
+
+- props 값은 컴포넌트 함수의 파라미터로 받아와서 사용할 수 있다.
+- props 를 렌더링 할 때는 JSX 내부에서 {} 기호로 감싸준다.
+
+- Main.js
+
+```js
+import React from "react";
+import "./react.css";
+
+const Main = props => {
   return (
     <div>
-      <h1>이벤트 연습</h1>
-      <input
-        type="text"
-        name="username"
-        placeholder="사용자명"
-        value={username}
-        onChange={onChangeUsername}
-      />
-      <br />
-      {/* 내용을 변경할 때는 onChange */}
-      <input
-        type="text"
-        name="message"
-        placeholder="아무거나 입력해 보세요"
-        value={message}
-        onChange={onChangeMessage}
-      ></input>
+      <h1>안녕하세요, 나는 {props.title} 입니다.</h1>
     </div>
   );
 };
 
 export default Main;
 ```
+
+- Main.js
+
+```js
+import React from "react";
+import "./react.css";
+
+const Main = ({ title }) => {
+  return (
+    <div>
+      <h1>안녕하세요, 나는 {title} 입니다.</h1>
+    </div>
+  );
+};
+
+export default Main;
+```
+
+### 2.3.2 컴포넌트를 사용할 때 props 값 지정하기
+
+- App.js
+
+```js
+import Main from "./Main";
+
+function App() {
+  return <Main title="리액트" />;
+}
+
+export default App;
+```
+
+### 2.3.3 props 기본값 설정 : defaultProps
+
+```js
+import React, { Component } from "react";
+import "./react.css";
+
+const Main = props => {
+  return (
+    <div>
+      <h1>안녕하세요, 나는{props.title}입니다.</h1>
+    </div>
+  );
+};
+
+Main.defaultProps = {
+  title: "기본 이름",
+};
+
+export default Main;
+```
+
+### 2.3.4 태그 사이의 내용을 보여주는 children
+
+- src/App.js
+
+```js
+import Main from "./Main";
+
+function App() {
+  return <Main>리액트</Main>;
+}
+
+export default App;
+```
+
+- src/Main.js
+
+```js
+import React, { Component } from "react";
+import "./react.css";
+
+const Main = props => {
+  return (
+    <div>
+      <h1>안녕하세요, 나는{props.title}입니다.</h1>
+      <h2>children 값은 {props.children}입니다.</h2>
+    </div>
+  );
+};
+
+Main.defaultProps = {
+  title: "기본 이름",
+};
+
+export default Main;
+```
+
+### 2.3.5 구조분해할당(비구조화 할당 문법)을 통해 props 내부 값 추출
+
+- [구조 분해 할당](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+
+- src/Main.js
+
+```js
+import React, { Component } from "react";
+
+const Main = ({ title, children }) => {
+  return (
+    <div>
+      <h1>안녕하세요, 나는{title}입니다.</h1>
+      <h2>children 값은 {children}입니다.</h2>
+    </div>
+  );
+};
+
+Main.defaultProps = {
+  title: "기본 이름",
+};
+
+export default Main;
+```
+
+### 2.3.6 prop Type을 통한 props 검증
+
+- (교재 참고)
+
+<!-- 카카오톡으로 받은 파일
+# 2. 컴포넌트
+
+## 2.1 클래스형 컴포넌트
+
+- 생긴 모양만 일단 알아두자
+- 함수형과 기능에서 큰 차이 없다.
+- **트렌드 함수형 컴포넌트와 Hooks을 사용하는 것**
+
+```js
+import React, { Component } from "react";
+import "./react.css";
+
+// const Main = () => {
+//   const title = "리액트";
+
+//   return (
+//     <div>
+//       <h1>{title}</h1>
+//     </div>
+//   );
+// };
+
+class Main extends Component {
+  render() {
+    const title = "리액트";
+    return (
+      <div>
+        <h1>{title}</h1>
+      </div>
+    );
+  }
+}
+
+export default Main;
+```
+
+## 2.2 컴포넌트 생성
+
+- 파일 및 컴포넌트 명은 파스칼케이스로 한다.
+- 리액트에서는 화살표 함수를 많이 쓴다.
+
+## 2.3 props(properties)
+
+- 컴포넌트 속성을 설정할 때 사용하는 요소
+- **props 값은 해당 컴포넌트를 불러와 사용하는 부모 컴포넌트에서 설정**
+
+### 2.3.1 JSX 내부에서 props 렌더링
+
+- props 값은 컴포넌트 함수의 파라미터로 받아와서 사용할 수 있다.
+- props를 렌더링 할 때는 JSX 내부에서 {} 기호로 감싸준다.
+- App.js
+
+```js
+import Main from "./Main";
+
+function App() {
+  return <Main title="리액트" />;
+}
+
+export default App;
+```
+
+- Main.js
+
+```js
+import React from "react";
+import "./react.css";
+
+const Main = props => {
+  return (
+    <div>
+      <h1>안녕하세요, 나는{props.title}입니다.</h1>
+    </div>
+  );
+};
+
+export default Main;
+``` -->

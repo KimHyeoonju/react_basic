@@ -16,6 +16,16 @@ const Main = () => {
     console.log(event.target.value);
   };
 
+  const onClick = () => {
+    alert(`${username}:${message}`);
+  };
+
+  const onKeyPress = event => {
+    if (event.key === "Enter") {
+      onClick();
+    }
+  };
+
   return (
     <div>
       <h1>이벤트 연습</h1>
@@ -34,7 +44,10 @@ const Main = () => {
         placeholder="아무거나 입력해 보세요"
         value={message}
         onChange={onChangeMessage}
-      ></input>
+        onKey
+      />
+      <br />
+      <button onClick={onClick}>확인</button>
     </div>
   );
 };
