@@ -11,6 +11,20 @@
   :: 모두 다 사용하지는 않지만 확인만 일단 해두자
   :: onClick
   :: onChange
+  :: clipboard
+  :: composition
+  :: keyboard
+  :: focus
+  :: form
+  :: mouse
+  :: seletion
+  :: touch
+  :: ui
+  :: wheel
+  :: media
+  :: image
+  :: animation
+  :: transition
 
 ## 4.1 함수 컴포넌트로 이벤트 핸들링 구현해보기
 
