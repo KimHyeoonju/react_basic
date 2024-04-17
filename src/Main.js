@@ -1,19 +1,35 @@
 import React, { useState } from "react";
 
-const Main = () => {
-  // username 상태
-  // const [현재상태, 상태업데이트함수] = useState(초기값)
-  const [username, setUsername] = useState("");
-  const [message, setMessage] = useState("");
+// 객체
+const initState = {
+  username: "",
+  message: "",
+};
 
-  const onChangeMessage = event => {
-    setUsername(event.target.value);
-    console.log(event.target.value);
+const Main = () => {
+  const [memberInfo, setMemberInfo] = useState(initState);
+
+  const { username, message } = memberInfo;
+
+  const onChange = event => {
+    const nextMemberInfo = {
+      ...memberInfo, //기존의 정보 내용을 이자리에 복사한 뒤
+      [event.target.name]: event.target.value, // 원하는 값을 덮어 씌우기
+    };
+    setMemberInfo(nextMemberInfo);
   };
 
-  const onChangeUsername = event => {
-    setUsername(event.target.value);
-    console.log(event.target.value);
+  const onClick = () => {
+    alert(`${username}: ${message}`);
+
+    // 입력 내용 초기화
+    setMemberInfo(initState);
+  };
+
+  const onKeyPress = event => {
+    if (event.key === "Enter") {
+      onClick();
+    }
   };
 
   return (
@@ -24,7 +40,7 @@ const Main = () => {
         name="username"
         placeholder="사용자명"
         value={username}
-        onChange={onChangeUsername}
+        onChange={onChange}
       />
       <br />
       {/* 내용을 변경할 때는 onChange */}
@@ -33,8 +49,11 @@ const Main = () => {
         name="message"
         placeholder="아무거나 입력해 보세요"
         value={message}
-        onChange={onChangeMessage}
-      ></input>
+        onChange={onChange}
+        onKeyUp={onKeyPress}
+      />
+      <br />
+      <button onClick={onClick}>확인</button>
     </div>
   );
 };
