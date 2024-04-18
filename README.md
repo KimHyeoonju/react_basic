@@ -64,6 +64,150 @@ useEffect(() => {}, [의존성 배열]);
 
   - useEffect 는 기본적으로 렌더링되고 난 직후마다 실행된다.
   - 두 번째 파라미터 배열에 무엇을 넣는지에 따라 실행되는 조건이 달라진다.
-  - 컴포넌트가 언마운트 되기 전이나 업데이트 되기 직전에 어떠한 작업을 수행하고 싶다면 cleanUp 함수를 반환해주어야 한다.
-  - 렌더링 될 때마다 뒷정리 함수가 계속 나타난 것을 확인 할 수 있다.
-  - 뒷정리 함수가 호출될 때는 업데이트 직전의 값을 보여준다.
+
+- 컴포넌트가 언마운트 되기 전이나 업데이트 되기 직전에 어떠한 작업을 수행하고 싶다면 cleanUp 함수를 반환해주어야 한다.
+- 렌더링 될 때마다 뒷정리 함수가 계속 나타난 것을 확인 할 수 있다.
+- 뒷정리 함수가 호출될 때는 업데이트 직전의 값을 보여준다.
+
+```js
+import React, { useEffect, useState } from "react";
+
+const Counter = () => {
+  console.log("카운터 컴포넌트 렌더링");
+
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    console.log("effect");
+    console.log(value);
+    return () => {
+      console.log("cleanup");
+      console.log(value);
+    };
+  }, [value]);
+  // [value] 에 [] 로 아무것도 없다면 처음 렌더링에서만 실행된다.
+
+  return (
+    <div>
+      <p>
+        현재 카운터 값은 <b>{value} 입니다.</b>
+      </p>
+      <button onClick={() => setValue(value + 1)}>1 증가</button>
+      <button onClick={() => setValue(value - 1)}>1 감소</button>
+    </div>
+  );
+};
+
+export default Counter;
+```
+
+- 오직 언마운트될 때만 뒷정리 함수를 호출하고 싶다면 useEffect 함수에 빈배열을 넣으면 된다.
+
+```js
+import React, { useEffect, useState } from "react";
+
+const Counter = () => {
+  console.log("카운터 컴포넌트 렌더링");
+
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    console.log("effect");
+    console.log(value);
+    return () => {
+      console.log("cleanup");
+      console.log(value);
+    };
+  }, []);
+
+  return (
+    <div>
+      <p>
+        현재 카운터 값은 <b>{value} 입니다.</b>
+      </p>
+      <button onClick={() => setValue(value + 1)}>1 증가</button>
+      <button onClick={() => setValue(value - 1)}>1 감소</button>
+    </div>
+  );
+};
+
+export default Counter;
+```
+
+## 6.3. userReducer
+
+### 기본이해
+
+- 커피숍에 비유 해볼께요
+- 액션타입 : 커피숍의 메뉴 (아메리카노, 라떼, 카푸치노, 아이스티 ...)
+- 액션생성 : 주문서 작성 (아메리카노 하나랑 라떼 하나 주세요)
+  - 페이로드 : 주문서 작성 (아메리카노는 **샷추가**, 라떼 우유는 **두유**로 바꿔주세요)
+- 디스패치 : 주문하기
+- 리듀서 : 바리스타, 주문 받은걸 만들고 가공해서 손님에게 내 준다.
+
+- useState보다 더 다양한 컴포넌트 상황에 따라 다양한 상태를 다른 값으로 업데이트 해주고 싶을 때 사용하는 Hook
+- 리듀서는 현재상태, 그리고 업데이트를 위해 필요한 정보를 담은 액션(action)값을 전달 받아 새로운 상태를 반환하는 함수
+- 리듀서 함수에서 새로운 상태를 만들 때는 반드시 불변성을 지켜 주어야 한다.
+
+### 6.3.1. 카운터 구현하기
+
+- src/components/CounterReducer.js
+
+### 6.3.2. input 상태 관리하기
+
+- useReducer에서의 액션은 그 어떤 값도 사용 가능하다.
+- 그래서 e.target 값 자체를 액션 값으로 사용해보자.
+
+- src/components/InputReducer.js
+
+```js
+import React, { useReducer } from "react";
+
+const reducer = (state, action) => {
+  return {
+    ...state,
+    [action.name]: action.value,
+  };
+};
+
+const InputReducer = () => {
+  const [state, dispatch] = useReducer(reducer, {
+    username: "",
+    nickname: "",
+  });
+
+  const { username, nickname } = state;
+
+  const onChange = e => {
+    dispatch(e.target);
+  };
+
+  return (
+    <div>
+      <div>
+        <input
+          type="text"
+          name="username"
+          value={username}
+          onChange={onChange}
+        />
+        <br />
+        <input
+          type="text"
+          name="nickname"
+          value={nickname}
+          onChange={onChange}
+        />
+      </div>
+      <div>
+        <b>이름:</b> {username}
+      </div>
+      <div>
+        <b>닉네임:</b> {nickname}
+      </div>
+    </div>
+  );
+};
+
+export default InputReducer;
+```
