@@ -2,6 +2,7 @@ import React from "react";
 import Counter from "../components/Counter";
 import CounterReducer from "../components/CounterReducer";
 import InputReducer from "../components/InputReducer";
+import Average from "../components/Average";
 
 const MainPage = () => {
   return (
@@ -22,9 +23,14 @@ const MainPage = () => {
         <h3>예시 : 리듀서 활용 카운터 앱</h3>
         <CounterReducer />
       </div> */}
-      <div>
+      {/* <div>
         <h3>예시 : input 상태 관리하기</h3>
         <InputReducer />
+      </div> */}
+      <div>
+        <h2>useRef</h2>
+        <h3>예시 : 평균값 계산</h3>
+        <Average />
       </div>
     </div>
   );
